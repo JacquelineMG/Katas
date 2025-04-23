@@ -8,27 +8,32 @@
 // We want to find a recipe that utilizes one ingredient from Bakery A and one from Bakery B.
 
 
-const ingredientCheck = (bakery, ingredients) => {
-  let array = [];
-  for (const j of bakery) {
-    console.log(j);
-    if (ingredients.includes(j)) {
-      console.log(j);
+const getIngredientsTally = (bakery1, bakery2, rec) => {
+  const list = {};
+  for (const r of rec) {
+    list[r.name] = {a: 0, b: 0};
+
+    if (bakery1.includes(r.ingredients[0]) || bakery2.includes(r.ingredients[0])) {
+      list[r.name].a += 1;
+    }
+
+    if (bakery1.includes(r.ingredients[1]) || bakery2.includes(r.ingredients[1])) {
+      list[r.name].b += 1;
     }
   }
-  return array;
+  return list;
 };
 
 const chooseRecipe = (bakeryA, bakeryB, recipes) => {
   let recipe = "";
+  const tally = getIngredientsTally(bakeryA, bakeryB, recipes);
 
-  for (const i of recipes)
-    ingredientCheck(bakeryA, i.ingredients);
-
+  for (const i in tally) {
+    if (tally[i].a > 0 && tally[i].b > 0)
+      recipe = i;
+  }
   return recipe;
 };
-
-
 
 
 let bakeryA = ["saffron", "eggs", "tomato paste", "coconut", "custard"];
@@ -51,21 +56,21 @@ let recipes = [
 
 console.log(chooseRecipe(bakeryA, bakeryB, recipes));
 
-// bakeryA = ["potatoes", "bay leaf", "raisins"];
-// bakeryB = ["red bean", "dijon mustard", "apples"];
-// recipes = [
-//   {
-//     name: "Potato Ganache",
-//     ingredients: ["potatoes", "chocolate"],
-//   },
-//   {
-//     name: "Sweet Fish",
-//     ingredients: ["anchovies", "honey"],
-//   },
-//   {
-//     name: "Nima's Famous Dijon Raisins",
-//     ingredients: ["dijon mustard", "raisins"],
-//   },
-// ];
+bakeryA = ["potatoes", "bay leaf", "raisins"];
+bakeryB = ["red bean", "dijon mustard", "apples"];
+recipes = [
+  {
+    name: "Potato Ganache",
+    ingredients: ["potatoes", "chocolate"],
+  },
+  {
+    name: "Sweet Fish",
+    ingredients: ["anchovies", "honey"],
+  },
+  {
+    name: "Nima's Famous Dijon Raisins",
+    ingredients: ["dijon mustard", "raisins"],
+  },
+];
 
-// console.log(chooseRecipe(bakeryA, bakeryB, recipes));
+console.log(chooseRecipe(bakeryA, bakeryB, recipes));
